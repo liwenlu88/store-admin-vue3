@@ -14,7 +14,8 @@ export default defineConfig({
   plugins: [
     vue(),
     AutoImport({
-      imports:['vue'],
+      // 自动导入 Vue 相关函数
+      imports: ['vue', 'vue-router', 'vuex'],
       resolvers: [
         // 自动导入 Element Plus 相关函数
         ElementPlusResolver(),

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
-import { Search } from "@element-plus/icons-vue";
 
 const handleClick = () => {
   ElMessage({
@@ -12,9 +11,12 @@ const handleClick = () => {
 </script>
 
 <template>
-  <el-icon :size="20">
-    <Search />
-  </el-icon>
+  <el-input placeholder="搜索文本框">
+    <template #suffix>
+      <i-ep-search></i-ep-search>
+    </template>
+  </el-input>
+  <br>
   <el-button type="primary" @click="handleClick">点击</el-button>
   <header>
     <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
