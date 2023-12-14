@@ -1,9 +1,21 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+import { Search } from "@element-plus/icons-vue";
+
+const handleClick = () => {
+  ElMessage({
+    message: 'Hello World',
+    type: 'success',
+  })
+}
 </script>
 
 <template>
+  <el-icon :size="20">
+    <Search />
+  </el-icon>
+  <el-button type="primary" @click="handleClick">点击</el-button>
   <header>
     <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
 
