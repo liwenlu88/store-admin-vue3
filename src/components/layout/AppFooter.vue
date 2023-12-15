@@ -21,6 +21,8 @@
     align-items: center;
     font-size: 12px;
     color: #999999;
+    background-color: #fff;
+    box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.12);
 
     .footer-content {
         span {

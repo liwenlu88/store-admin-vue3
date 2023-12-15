@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ArrowRight } from '@element-plus/icons-vue'
+import { isCollapse } from './isCollapse'
 
-const isCollapse = ref(false)
 </script>
 
 <template>
     <el-header>
         <!-- 图标 -->
-        <el-icon>
+        <el-icon :size="28" color="#999999b0" @click="isCollapse = !isCollapse">
             <i-ep-expand v-show="isCollapse" />
             <i-ep-fold v-show="!isCollapse" />
         </el-icon>
@@ -21,7 +21,8 @@ const isCollapse = ref(false)
         <!-- 账户信息 -->
         <el-dropdown>
             <span class="el-dropdown-link">
-                <el-avatar :size="50" :src="'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'" />
+                <el-avatar :size="50"
+                    :src="'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuE05wlq11Ucqu6nM0YF7pX9jXRRZIU_aXljni2ea40Q&s'" />
                 <el-icon class="el-icon--right">
                     <i-ep-arrowDown />
                 </el-icon>

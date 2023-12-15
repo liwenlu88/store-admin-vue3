@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const isCollapse = ref(false)
+import { isCollapse } from './isCollapse'
 </script>
 
 <template>
