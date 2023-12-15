@@ -39,6 +39,7 @@ import { isCollapse } from './isCollapse'
 
 <style lang="scss" scoped>
 .el-header {
+    height: 80px;
     display: flex;
     align-items: center;
     padding: 0 20px;
