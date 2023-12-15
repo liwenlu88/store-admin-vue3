@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import AppAside from '@/components/layout/AppAside.vue'
+import AppHeader from '@/components/layout/AppHeader.vue'
 </script>
 
 <template>
     <div class="common-layout">
         <el-container>
             <AppAside />
-            <el-container>
-                <el-header>Header</el-header>
+            <el-container class="header-main-footer">
+                <AppHeader />
                 <el-main>Main</el-main>
                 <el-footer>Footer</el-footer>
             </el-container>
@@ -16,4 +17,8 @@ import AppAside from '@/components/layout/AppAside.vue'
 </template>
 
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.header-main-footer {
+    flex-direction: column;
+}
+</style>
