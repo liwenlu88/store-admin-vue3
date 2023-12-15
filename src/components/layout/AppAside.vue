@@ -5,10 +5,10 @@ const isCollapse = ref(false)
 <template>
     <el-aside>
         <el-scrollbar>
-            <el-menu router unique-opened :collapse="isCollapse">
+            <el-menu router unique-opened :collapse="isCollapse" background-color="#36485D" text-color="#FCFCFC">
                 <a href="/" class="logo">
                     <img src="@/assets/favicon.ico" alt="">
-                    <h1>商场后台管理</h1>
+                    <h1>store-admin-vue3</h1>
                 </a>
 
                 <el-sub-menu index="permissions">
@@ -84,13 +84,13 @@ const isCollapse = ref(false)
 
 <style lang="scss" scoped>
 .el-aside {
-    background-color: #F0F0F0;
+    background-color: #2B3E54;
     height: 100vh;
     width: auto;
 
     .el-menu {
-        background-color: #F0F0F0;
-        width: 200px;
+        background-color: #2B3E54;
+        width: 260px;
 
         &.el-menu--collapse {
             width: 60px;
@@ -107,8 +107,8 @@ const isCollapse = ref(false)
         justify-content: center;
         height: 60px;
         width: 100%;
-        background-color: #F0F0F0;
-        color: #409EFF;
+        background-color: #2B3E54;
+        color: #FCFCFC;
 
         img {
             width: 32px;
