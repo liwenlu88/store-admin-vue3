@@ -1,5 +1,13 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router'
+import request from '@/utils/request'
+
+request({
+  method: 'get',
+  url: 'test',
+}).then((res) => {
+  console.log(res)
+})
 </script>
 
 <template>
