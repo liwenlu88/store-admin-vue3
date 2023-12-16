@@ -1,6 +1,6 @@
 import { fileURLToPath, URL } from 'node:url';
 
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import vue from '@vitejs/plugin-vue';
 
 import AutoImport from 'unplugin-auto-import/vite';
@@ -24,6 +24,7 @@ export default defineConfig({
           prefix: 'Icon',
         }),
       ],
+      dts: "./auto-import.d.ts",
     }),
     Components({
       resolvers: [
@@ -39,6 +40,15 @@ export default defineConfig({
       autoInstall: true,
     }),
   ],
+  server: {
+    proxy: {
+      '/api': {
+        target: loadEnv("", process.cwd()), //跨域地址
+        changeOrigin: true, //支持跨域
+        rewrite: (path) => path.replace(/^\/api/, "")//重写路径,替换/api
+      }
+    }
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))

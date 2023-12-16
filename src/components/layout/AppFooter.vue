@@ -6,7 +6,7 @@
     <el-footer>
         <div class="footer-content">
             <span>© 2023 肌无力猛男</span>
-            <span>VueVersion:3.2.0</span>
+            <span>VueVersion:3.3.11</span>
             <span>PHPVersion:8.3.0</span>
             <span>MySQLVersion:8.2.0</span>
             <span>laravelVersion:10.x</span>
