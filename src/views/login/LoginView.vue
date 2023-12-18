@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import type { FormEmits, FormInstance, FormRules } from 'element-plus';
+import type { FormInstance, FormRules } from 'element-plus';
 import { login } from '@/api/users';
-import { th } from 'element-plus/es/locale/index.mjs';
 
 // 表单默认数据
 const form = reactive({
     email: '',
     password: '',
-    captcha: ''
+    captcha: '',
 })
 
 // 格式化验证码
@@ -49,8 +48,10 @@ const onSubmit = async () => {
     const data = await login(form).then(res => {
         if (res.data.status === 200 && res.data.success === true) {
             ElMessage.success('登陆成功')
+            console.log(res.data);
             return res.data
         } else {
+            console.log(res.data);
             ElMessage.error(res.data.message)
             throw new Error(res.data.message)
         }
@@ -89,6 +90,7 @@ const onReset = () => {
                     </div>
                 </div>
             </el-form-item>
+
             <el-form-item>
                 <el-button type="primary" @click="onSubmit">登陆</el-button>
                 <el-button type="warning" @click="onReset">重置</el-button>

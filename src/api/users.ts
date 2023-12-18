@@ -1,12 +1,5 @@
-import axios from 'axios'
 import request from "@/utils/request"
-
-
-// 获取csrfToken
-let csrfToken = ""
-axios.get("http://localhost:8000/csrf/token").then(res => {
-    csrfToken = res.data
-})
+import axios from "axios"
 
 // 登陆接口的类型
 type LoginInfo = {
@@ -20,17 +13,18 @@ type LoginResult = {
     status: number
     success: boolean
     message: string
-    token: string
 }
+
+console.log(axios.defaults.headers.common['X-CSRF-TOKEN']);
 
 // 用户请求登陆
 export const login = (LoginInfo: LoginInfo) => {
     return request<LoginResult>({
         method: "POST",
-        url: "/admin/user/login",
-        headers: {
-            "csrfToken": csrfToken
-        },
+        url: "/api/admin/user/login",
         data: LoginInfo,
+        headers: {
+            "X-CSRF-TOKEN": axios.defaults.headers.common['X-CSRF-TOKEN']
+        }
     })
-} 
+}

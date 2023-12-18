@@ -40,18 +40,23 @@ export default defineConfig({
       autoInstall: true,
     }),
   ],
-  server: {
-    proxy: {
-      '/api': {
-        target: loadEnv("", process.cwd()), //跨域地址
-        changeOrigin: true, //支持跨域
-        rewrite: (path) => path.replace(/^\/api/, "")//重写路径,替换/api
-      }
-    }
-  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
-  }
+  },
+  server: {
+    open: true,
+    proxy: {
+      '/api': {
+        target: loadEnv("", process.cwd()),
+        changeOrigin: true,
+      },
+      '/front': {
+        target: loadEnv("", process.cwd()),
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/front/, ''),
+      }
+    }
+  },
 })
