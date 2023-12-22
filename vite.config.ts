@@ -1,10 +1,10 @@
-import { fileURLToPath, URL } from 'node:url';
+import { fileURLToPath, URL } from 'node:url'
 
-import { defineConfig, loadEnv } from 'vite';
-import vue from '@vitejs/plugin-vue';
+import { defineConfig, loadEnv } from 'vite'
+import vue from '@vitejs/plugin-vue'
 
-import AutoImport from 'unplugin-auto-import/vite';
-import Components from 'unplugin-vue-components/vite';
+import AutoImport from 'unplugin-auto-import/vite'
+import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
 import Icons from 'unplugin-icons/vite'
@@ -21,10 +21,10 @@ export default defineConfig({
         ElementPlusResolver(),
         // 自动导入图标组件
         IconsResolver({
-          prefix: 'Icon',
-        }),
+          prefix: 'Icon'
+        })
       ],
-      dts: "./auto-import.d.ts",
+      dts: './auto-import.d.ts'
     }),
     Components({
       resolvers: [
@@ -32,13 +32,13 @@ export default defineConfig({
         ElementPlusResolver(),
         // 自动注册图标组件
         IconsResolver({
-          enabledCollections: ['ep'],
-        }),
-      ],
+          enabledCollections: ['ep']
+        })
+      ]
     }),
     Icons({
-      autoInstall: true,
-    }),
+      autoInstall: true
+    })
   ],
   resolve: {
     alias: {
@@ -49,14 +49,9 @@ export default defineConfig({
     open: true,
     proxy: {
       '/api': {
-        target: loadEnv("", process.cwd()),
-        changeOrigin: true,
-      },
-      '/front': {
-        target: loadEnv("", process.cwd()),
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/front/, ''),
+        target: loadEnv('', process.cwd()),
+        changeOrigin: true
       }
     }
-  },
+  }
 })
