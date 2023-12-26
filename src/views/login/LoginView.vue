@@ -57,8 +57,8 @@ const rules = reactive<FormRules>({
 
 // 表单默认数据
 const form = reactive({
-  email: '2816842036@qq.com',
-  password: 'lwl20030608',
+  email: '',
+  password: '',
   captchaCode: '',
   captchaKey: captchaKey
 })
@@ -126,7 +126,9 @@ const onSubmit = async () => {
 
 <template>
   <div class="login-form">
-    <el-form :model="form" label-width="120px" label-position="top" ref="formRef" :rules="rules"
+    <el-form :model="form" :hide-required-asterisk="true" @keydown.enter="onSubmit"
+             label-width="120px" label-position="top"
+             ref="formRef" :rules="rules"
              size="large">
       <h2 class="logo">
         <img src="@/assets/favicon.ico" alt="logo" />
@@ -140,7 +142,6 @@ const onSubmit = async () => {
       <el-form-item label="密码:" prop="password">
         <el-input v-model="form.password" placeholder="请输入密码" show-password />
       </el-form-item>
-
       <el-form-item label="验证码:" prop="captcha">
         <div class="captcha">
           <el-input v-model="form.captchaCode" placeholder="请输入验证码" />
@@ -156,7 +157,8 @@ const onSubmit = async () => {
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" @click="onSubmit" :loading="isLoading">登陆</el-button>
+        <el-button type="primary" @click="onSubmit" :loading="isLoading">登陆
+        </el-button>
         <el-button type="warning" @click="onReset">重置</el-button>
       </el-form-item>
     </el-form>

@@ -1,5 +1,13 @@
 import request from '@/utils/request'
 
+// 公共的类型
+type CommonResult<T = string> = {
+  status: number
+  success: boolean
+  message: string
+  content: T
+}
+
 // 登陆接口的类型
 type LoginInfo = {
   email: string
@@ -9,12 +17,7 @@ type LoginInfo = {
 }
 
 // 登陆接口的返回类型
-type LoginResult = {
-  status: number
-  success: boolean
-  message: string
-  content: JSON
-}
+type LoginResult = CommonResult
 
 // 用户请求登陆
 export const login = (LoginInfo: LoginInfo) => {
@@ -25,21 +28,44 @@ export const login = (LoginInfo: LoginInfo) => {
   })
 }
 
-// 获取用户信息的类型
-type UserInfo = {
-  status: number
-  success: boolean
-  message: string
-  content: {
-    avatar: string
-    userName: string
-  }
+// 退出登陆
+export const logout = () => {
+  return request({
+    method: 'POST',
+    url: '/api/admin/user/logout'
+  })
 }
+
+// 获取用户信息的类型
+type UserInfo = CommonResult<{
+  avatar: string
+  userName: string
+  userEmail: string
+}>
 
 // 获取用户信息
 export const getUserInfo = () => {
   return request<UserInfo>({
     method: 'POST',
     url: '/api/admin/user/info'
+  })
+}
+
+// 修改用户信息的类型
+type UpdateUserInfo = CommonResult<{
+  avatar: string
+  userName: string
+  userEmail: string
+  oldPassword: string
+  newPassword: string
+  confirmPassword: string
+}>
+
+// 修改用户信息
+export const updateUser = (data: any) => {
+  return request<UpdateUserInfo>({
+    method: 'POST',
+    url: '/api/admin/user/update',
+    data: data
   })
 }

@@ -21,7 +21,7 @@ request.interceptors.request.use((config) => {
 
 // message 返回值为 请先登录 时清空本地存储的useUserTokenStore() 中的token 并跳转到登录页面
 request.interceptors.response.use((response) => {
-  if (response.data.message === '请先登录') {
+  if (response.data.status === 401) {
     // 清空本地存储的useUserTokenStore() 中的token
     localStorage.clear()
     window.location.href = '/login'
