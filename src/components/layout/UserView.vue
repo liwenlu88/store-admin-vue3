@@ -11,18 +11,20 @@ const storeToken = reactive({
     access_token: userStoreToken.token.access_token
 })
 
+// 用户信息 store
 const userStoreInfo = useUserInfoStore();
 
-// 使 imageDirectory 成为响应式的计算属性
-const imageDirectory = computed(() => userStoreInfo.userInfo.user_avatar);
-
-// 同样，使 imageUrl 也成为响应式的计算属性
-const imageUrl = computed(() => import.meta.env.VITE_BASE_API + userStoreInfo.userInfo.user_avatar);
+// 图片路径
+const imageDirectory = ref(userStoreInfo.userInfo.user_avatar)
+// 图片url
+const imageUrl = ref(import.meta.env.VITE_BASE_API + userStoreInfo.userInfo.user_avatar)
 
 // 上传成功后的回调
 const handleAvatarSuccess: UploadProps['onSuccess'] = (uploadFile) => {
-    // imageDirectory.value = uploadFile.content.path
-    // imageUrl.value = import.meta.env.VITE_BASE_API + imageDirectory.value
+    // 上传成功后，将图片路径保存到响应式计算属性中
+    imageDirectory.value = uploadFile.data
+    // 上传成功后，将图片路径保存到响应式计算属性中
+    imageUrl.value = import.meta.env.VITE_BASE_API + uploadFile.data
 }
 
 // 上传前的校验

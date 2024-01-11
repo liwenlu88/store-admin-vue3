@@ -9,7 +9,6 @@ import router from '@/router'
 // 用户信息store
 const userStoreInfo = useUserInfoStore()
 
-
 // 获取用户信息
 getUserInfo().then(res => {
   // 用户信息存储到store中
@@ -17,9 +16,9 @@ getUserInfo().then(res => {
 })
 
 // 用户信息 默认值
-const userInfo = reactive({
-  userName: computed(() => userStoreInfo.userInfo.user_name),
-  avatar: computed(() => import.meta.env.VITE_BASE_API + userStoreInfo.userInfo.user_avatar)
+const userInfo = ref({
+  userName: userStoreInfo.userInfo.user_name,
+  avatar: import.meta.env.VITE_BASE_API + userStoreInfo.userInfo.user_avatar
 })
 
 // 跳转到用户信息页面
