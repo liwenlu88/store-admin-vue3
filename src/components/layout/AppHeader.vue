@@ -1,26 +1,25 @@
 <script setup lang="ts">
 import { ArrowRight } from '@element-plus/icons-vue'
 import { isCollapse } from './isCollapse'
-import { getUserInfo, logout } from '@/api/users'
+import { logout } from '@/api/users'
+import { getUserInfo } from '@/api/users'
 import { useUserInfoStore } from '@/stores/userInfo'
 import router from '@/router'
 
-// 用户信息 默认值
-const userInfo = ref({
-  userName: '',
-  avatar: '',
-  userEmail: ''
-})
+// 用户信息store
+const userStoreInfo = useUserInfoStore()
+
 
 // 获取用户信息
 getUserInfo().then(res => {
   // 用户信息存储到store中
-  const store = useUserInfoStore()
-  store.saveUserInfo(res.data.content)
+  userStoreInfo.saveUserInfo((res.data as any).content)
+})
 
-  // 用户信息存储到userInfo中
-  userInfo.value = res.data.content
-  userInfo.value.avatar = import.meta.env.VITE_BASE_API + res.data.content.avatar
+// 用户信息 默认值
+const userInfo = reactive({
+  userName: computed(() => userStoreInfo.userInfo.user_name),
+  avatar: computed(() => import.meta.env.VITE_BASE_API + userStoreInfo.userInfo.user_avatar)
 })
 
 // 跳转到用户信息页面
@@ -63,9 +62,9 @@ const logoutBtn = () => {
     <el-dropdown>
       <span class="el-dropdown-link">
         <el-avatar :size="50" :src="userInfo.avatar" />
-          <el-icon class="el-icon--right">
-            <i-ep-arrowDown />
-          </el-icon>
+        <el-icon class="el-icon--right">
+          <i-ep-arrowDown />
+        </el-icon>
       </span>
       <template #dropdown>
         <el-dropdown-menu>
