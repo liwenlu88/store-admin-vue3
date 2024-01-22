@@ -19,6 +19,12 @@ const imageDirectory = ref(userStoreInfo.userInfo.user_avatar)
 // 图片url
 const imageUrl = ref(import.meta.env.VITE_BASE_API + userStoreInfo.userInfo.user_avatar)
 
+// 监听 Pinia store 中 userInfo.user_avatar 的变化
+watch(() => userStoreInfo.userInfo.user_avatar, (newAvatar) => {
+    imageDirectory.value = newAvatar;
+    imageUrl.value = import.meta.env.VITE_BASE_API + newAvatar;
+});
+
 // 上传成功后的回调
 const handleAvatarSuccess: UploadProps['onSuccess'] = (uploadFile) => {
     // 上传成功后，将图片路径保存到响应式计算属性中

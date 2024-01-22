@@ -16,10 +16,10 @@ getUserInfo().then(res => {
 })
 
 // 用户信息 默认值
-const userInfo = ref({
+const userInfo = computed(() => ({
   userName: userStoreInfo.userInfo.user_name,
   avatar: import.meta.env.VITE_BASE_API + userStoreInfo.userInfo.user_avatar
-})
+}));
 
 // 跳转到用户信息页面
 const user = () => {

@@ -2,7 +2,6 @@
 import type { FormInstance, FormRules } from 'element-plus'
 import { login } from '@/api/users'
 import request from '@/utils/request'
-import { useUserInfoStore } from '@/stores/userInfo'
 import { useUserTokenStore } from '@/stores/userloginToken'
 
 const router = useRouter()
@@ -11,9 +10,6 @@ const route = useRoute()
 // 用户token store
 const store = useUserTokenStore()
 
-// 用户信息 store
-const userStoreInfo = useUserInfoStore()
-
 // 验证码
 const captchaImg = ref('')
 const captchaKey = ref('')
@@ -21,14 +17,16 @@ const captchaKey = ref('')
 // 获取验证码
 const updateCaptcha = () => {
     request({
-        url: '/captcha_code',
-        method: 'get'
-    }).then((res) => {
-        captchaImg.value = res.data.content.url.img
-        captchaKey.value = res.data.content.url.key
-    }).catch((err) => {
-        console.log(err)
+        url: '/api/captcha_code',
+        method: 'post'
     })
+        .then((res) => {
+            captchaImg.value = res.data.content.url.img
+            captchaKey.value = res.data.content.url.key
+        })
+        .catch((err) => {
+            console.log(err)
+        })
 }
 
 // 初始化加载验证码
@@ -122,12 +120,9 @@ const onSubmit = async () => {
     // 登陆成功 保存token信息
     store.saveToken((data as any).content)
 
-
-
     // 如果有重定向地址则跳转到重定向地址，否则跳转到首页
     await router.push((route.query.redirect as string) || '/')
 }
-
 </script>
 
 <template>
@@ -160,8 +155,7 @@ const onSubmit = async () => {
             </el-form-item>
 
             <el-form-item>
-                <el-button type="primary" @click="onSubmit" :loading="isLoading">登陆
-                </el-button>
+                <el-button type="primary" @click="onSubmit" :loading="isLoading">登陆 </el-button>
                 <el-button type="warning" @click="onReset">重置</el-button>
             </el-form-item>
         </el-form>
