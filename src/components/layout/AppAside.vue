@@ -5,10 +5,16 @@ import { isCollapse } from './isCollapse'
 <template>
   <el-aside>
     <el-scrollbar>
-      <el-menu router unique-opened :collapse="isCollapse" background-color="#36485D" text-color="#FCFCFC">
+      <el-menu
+        router
+        unique-opened
+        :collapse="isCollapse"
+        background-color="#36485D"
+        text-color="#FCFCFC"
+      >
         <a href="/" class="logo">
-          <img src="@/assets/favicon.ico" alt="">
-          <h1>store-admin-vue3</h1>
+          <img src="@/assets/favicon.ico" alt="" />
+          <h1>后台管理系统-Vue3</h1>
         </a>
 
         <el-sub-menu index="permissions">
@@ -76,7 +82,6 @@ import { isCollapse } from './isCollapse'
           </el-icon>
           <span>用户管理</span>
         </el-menu-item>
-
       </el-menu>
     </el-scrollbar>
   </el-aside>
@@ -84,12 +89,12 @@ import { isCollapse } from './isCollapse'
 
 <style lang="scss" scoped>
 .el-aside {
-  background-color: #2B3E54;
+  background-color: #2b3e54;
   height: 100vh;
   width: auto;
 
   .el-menu {
-    background-color: #2B3E54;
+    background-color: #2b3e54;
     width: 260px;
 
     &.el-menu--collapse {
@@ -107,8 +112,8 @@ import { isCollapse } from './isCollapse'
     justify-content: center;
     height: 60px;
     width: 100%;
-    background-color: #2B3E54;
-    color: #FCFCFC;
+    background-color: #2b3e54;
+    color: #fcfcfc;
 
     img {
       width: 32px;

@@ -12,26 +12,21 @@ const storeToken = reactive({
 })
 
 // 用户信息 store
-const userStoreInfo = useUserInfoStore();
+const userStoreInfo = useUserInfoStore()
 
-// 图片路径
-const imageDirectory = ref(userStoreInfo.userInfo.user_avatar)
 // 图片url
 const imageUrl = ref(import.meta.env.VITE_BASE_API + userStoreInfo.userInfo.user_avatar)
 
 // 监听 Pinia store 中 userInfo.user_avatar 的变化
-watch(() => userStoreInfo.userInfo.user_avatar, (newAvatar) => {
-    imageDirectory.value = newAvatar;
-    imageUrl.value = import.meta.env.VITE_BASE_API + newAvatar;
-});
-
-// 上传成功后的回调
-const handleAvatarSuccess: UploadProps['onSuccess'] = (uploadFile) => {
-    // 上传成功后，将图片路径保存到响应式计算属性中
-    imageDirectory.value = uploadFile.data
-    // 上传成功后，将图片路径保存到响应式计算属性中
-    imageUrl.value = import.meta.env.VITE_BASE_API + uploadFile.data
-}
+watch(
+    [() => userStoreInfo.userInfo.user_avatar, () => userStoreInfo.userInfo.user_name],
+    ([newAvatar, newUserName]) => {
+        // 这个回调将在 user_avatar 或 user_name 变化时触发
+        imageUrl.value = import.meta.env.VITE_BASE_API + newAvatar
+        // 你可以在这里添加处理 newUserName 的逻辑
+        form.userName = newUserName
+    }
+)
 
 // 上传前的校验
 const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
@@ -43,12 +38,20 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
     return true
 }
 
+// 上传成功后的回调
+const handleAvatarSuccess: UploadProps['onSuccess'] = (uploadFile) => {
+    // 上传成功后，将图片路径保存到响应式变量中
+    form.userAvatar = uploadFile.content.path
+    // 上传成功后，将图片路径保存到响应式变量中
+    imageUrl.value = import.meta.env.VITE_BASE_API + uploadFile.content.path
+}
+
 // 表单数据
 const form = reactive({
     userId: computed(() => userStoreInfo.userInfo.user_id),
-    userAvatar: imageDirectory.value,
+    userAvatar: userStoreInfo.userInfo.user_avatar,
     userEmail: computed(() => userStoreInfo.userInfo.user_email),
-    userName: computed(() => userStoreInfo.userInfo.user_name),
+    userName: userStoreInfo.userInfo.user_name,
     oldPassword: '',
     newPassword: '',
     confirmPassword: ''
@@ -70,11 +73,12 @@ const onSubmit = async () => {
                     <span>个人信息修改</span>
                 </h2>
 
+                <!-- 上传头像 -->
                 <el-upload class="avatar-uploader" :headers="{
                     user_id: storeToken.user_id,
                     access_token: storeToken.access_token,
                     'file-directory': 'avatar'
-                }" action="http://localhost:8000/api/admin/upload/image" accept=".jpg,.png,.jpeg,.ico"
+                }" action="http://localhost:8000/api/admin/upload/avatar" accept=".jpg,.png,.jpeg,.ico"
                     :show-file-list="false" :auto-upload="true" :on-success="handleAvatarSuccess"
                     :before-upload="beforeAvatarUpload">
                     <img v-if="imageUrl" :src="imageUrl" class="avatar" alt="" />
@@ -157,7 +161,8 @@ const onSubmit = async () => {
         }
 
         .avatar-uploader .avatar {
-            width: 178px;
+            width: auto;
+            height: 178px;
             display: block;
         }
 
