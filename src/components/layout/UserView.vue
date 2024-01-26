@@ -19,7 +19,10 @@ const imageUrl = ref(import.meta.env.VITE_BASE_API + userStoreInfo.userInfo.user
 
 // 监听 Pinia store 中 userInfo.user_avatar 的变化
 watch(
-    [() => userStoreInfo.userInfo.user_avatar, () => userStoreInfo.userInfo.user_name],
+    [
+        () => userStoreInfo.userInfo.user_avatar,
+        () => userStoreInfo.userInfo.user_name
+    ],
     ([newAvatar, newUserName]) => {
         // 这个回调将在 user_avatar 或 user_name 变化时触发
         imageUrl.value = import.meta.env.VITE_BASE_API + newAvatar

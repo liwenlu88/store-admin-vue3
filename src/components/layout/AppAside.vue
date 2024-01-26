@@ -5,16 +5,10 @@ import { isCollapse } from './isCollapse'
 <template>
   <el-aside>
     <el-scrollbar>
-      <el-menu
-        router
-        unique-opened
-        :collapse="isCollapse"
-        background-color="#36485D"
-        text-color="#FCFCFC"
-      >
+      <el-menu router unique-opened :collapse="isCollapse" background-color="#36485D" text-color="#FCFCFC">
         <a href="/" class="logo">
           <img src="@/assets/favicon.ico" alt="" />
-          <h1>后台管理系统-Vue3</h1>
+          <h1>后台管理</h1>
         </a>
 
         <el-sub-menu index="permissions">

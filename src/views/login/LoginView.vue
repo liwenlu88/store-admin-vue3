@@ -59,8 +59,8 @@ const rules = reactive<FormRules>({
 
 // 表单默认数据
 const form = reactive({
-    email: '',
-    password: '',
+    email: '2816842036@qq.com',
+    password: 'lwl20030608',
     captchaCode: '',
     captchaKey: captchaKey
 })
