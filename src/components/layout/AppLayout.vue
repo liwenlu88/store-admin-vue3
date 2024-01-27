@@ -7,27 +7,27 @@ import AppHeader from '@/components/layout/AppHeader.vue'
   <div class="common-layout">
     <el-container>
       <AppAside />
-      <el-container class="header-main-footer">
-        <!-- 头部 -->
+      <div class="header-and-main">
         <AppHeader />
-        <!-- 主体 -->
         <el-main>
           <el-scrollbar>
             <RouterView />
           </el-scrollbar>
         </el-main>
-      </el-container>
+      </div>
     </el-container>
   </div>
 </template>
 
-
 <style lang="scss" scoped>
-.header-main-footer {
+.header-and-main {
+  width: 100%;
   flex-direction: column;
-}
 
-.el-main {
-  padding-right: 0;
+  .el-main {
+    overflow: auto;
+    height: calc(100vh - 75px);
+  }
+
 }
 </style>

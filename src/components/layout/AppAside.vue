@@ -11,28 +11,6 @@ import { isCollapse } from './isCollapse'
           <h1>后台管理</h1>
         </a>
 
-        <el-sub-menu index="permissions">
-          <template #title>
-            <el-icon>
-              <i-ep-lock></i-ep-lock>
-            </el-icon>
-            <span>权限管理</span>
-          </template>
-          <!-- 二级菜单 -->
-          <el-menu-item index="/menus">
-            <el-icon>
-              <i-ep-grid></i-ep-grid>
-            </el-icon>
-            <span>菜单列表</span>
-          </el-menu-item>
-          <el-menu-item index="/roles">
-            <el-icon>
-              <i-ep-avatar></i-ep-avatar>
-            </el-icon>
-            <span>角色列表</span>
-          </el-menu-item>
-        </el-sub-menu>
-
         <el-menu-item index="/stores">
           <el-icon>
             <i-ep-shop></i-ep-shop>
@@ -76,6 +54,34 @@ import { isCollapse } from './isCollapse'
           </el-icon>
           <span>用户管理</span>
         </el-menu-item>
+
+        <el-sub-menu index="system">
+          <template #title>
+            <el-icon>
+              <i-ep-lock></i-ep-lock>
+            </el-icon>
+            <span>系统</span>
+          </template>
+          <!-- 二级菜单 -->
+          <el-menu-item index="/setting">
+            <el-icon>
+              <i-ep-LocationInformation />
+            </el-icon>
+            <span>设置</span>
+          </el-menu-item>
+          <el-menu-item index="/menus">
+            <el-icon>
+              <i-ep-grid></i-ep-grid>
+            </el-icon>
+            <span>菜单</span>
+          </el-menu-item>
+          <el-menu-item index="/roles">
+            <el-icon>
+              <i-ep-avatar></i-ep-avatar>
+            </el-icon>
+            <span>角色</span>
+          </el-menu-item>
+        </el-sub-menu>
       </el-menu>
     </el-scrollbar>
   </el-aside>

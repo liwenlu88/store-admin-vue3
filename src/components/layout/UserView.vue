@@ -119,7 +119,6 @@ const onSubmit = async () => {
 
 <style lang="scss" scoped>
 .container {
-    height: 100vh;
     margin: 30px auto;
     display: flex;
     justify-content: space-evenly;
