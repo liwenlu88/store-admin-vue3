@@ -28,9 +28,9 @@ const router = createRouter({
                     component: IndexView
                 },
                 {
-                    'path': '/user',
-                    'name': 'user',
-                    'component': () => import('@/components/layout/UserView.vue')
+                    'path': '/system/roles',
+                    'name': 'roles',
+                    'component': () => import('@/components/layout/RoleView.vue')
                 }
             ]
         }

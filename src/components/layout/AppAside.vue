@@ -11,14 +11,14 @@ import { isCollapse } from './isCollapse'
           <h1>后台管理</h1>
         </a>
 
-        <el-menu-item index="/stores">
+        <el-menu-item index="/shop/list">
           <el-icon>
             <i-ep-shop></i-ep-shop>
           </el-icon>
           <span>店铺管理</span>
         </el-menu-item>
 
-        <el-menu-item index="/commodity">
+        <el-menu-item index="/commodity/list">
           <el-icon>
             <i-ep-goods></i-ep-goods>
           </el-icon>
@@ -33,14 +33,14 @@ import { isCollapse } from './isCollapse'
             <span>广告管理</span>
           </template>
 
-          <el-menu-item index="/advertisespace">
+          <el-menu-item index="/advertise/location">
             <el-icon>
               <i-ep-LocationInformation />
             </el-icon>
             <span>广告位置</span>
           </el-menu-item>
 
-          <el-menu-item index="/advertiselist">
+          <el-menu-item index="/advertise/list">
             <el-icon>
               <i-ep-menu></i-ep-menu>
             </el-icon>
@@ -48,11 +48,11 @@ import { isCollapse } from './isCollapse'
           </el-menu-item>
         </el-sub-menu>
 
-        <el-menu-item index="/users">
+        <el-menu-item index="/users/list">
           <el-icon>
             <i-ep-user></i-ep-user>
           </el-icon>
-          <span>用户管理</span>
+          <span>客户管理</span>
         </el-menu-item>
 
         <el-sub-menu index="system">
@@ -63,19 +63,19 @@ import { isCollapse } from './isCollapse'
             <span>系统</span>
           </template>
           <!-- 二级菜单 -->
-          <el-menu-item index="/setting">
+          <el-menu-item index="/system/setting">
             <el-icon>
               <i-ep-LocationInformation />
             </el-icon>
             <span>设置</span>
           </el-menu-item>
-          <el-menu-item index="/menus">
+          <el-menu-item index="/system/menus">
             <el-icon>
               <i-ep-grid></i-ep-grid>
             </el-icon>
             <span>菜单</span>
           </el-menu-item>
-          <el-menu-item index="/roles">
+          <el-menu-item index="/system/roles">
             <el-icon>
               <i-ep-avatar></i-ep-avatar>
             </el-icon>

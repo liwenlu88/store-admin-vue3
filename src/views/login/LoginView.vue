@@ -19,14 +19,12 @@ const updateCaptcha = () => {
     request({
         url: '/api/captcha_code',
         method: 'post'
+    }).then((res) => {
+        captchaImg.value = res.data.content.url.img
+        captchaKey.value = res.data.content.url.key
+    }).catch((err) => {
+        console.log(err)
     })
-        .then((res) => {
-            captchaImg.value = res.data.content.url.img
-            captchaKey.value = res.data.content.url.key
-        })
-        .catch((err) => {
-            console.log(err)
-        })
 }
 
 // 初始化加载验证码

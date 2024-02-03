@@ -41,6 +41,7 @@ type UserInfo = CommonResult<{
   avatar: string
   userName: string
   userEmail: string
+  userDec: string
 }>
 
 // 获取用户信息
@@ -51,19 +52,9 @@ export const getUserInfo = () => {
   })
 }
 
-// 修改用户信息的类型
-type UpdateUserInfo = CommonResult<{
-  avatar: string
-  userName: string
-  userEmail: string
-  oldPassword: string
-  newPassword: string
-  confirmPassword: string
-}>
-
 // 修改用户信息
 export const updateUser = (data: any) => {
-  return request<UpdateUserInfo>({
+  return request({
     method: 'POST',
     url: '/api/admin/user/update',
     data: data

@@ -24,7 +24,7 @@ const userInfo = computed(() => ({
 // 跳转到用户信息页面
 const user = () => {
   router.push({
-    path: '/user'
+    path: '/system/roles'
   })
 }
 
