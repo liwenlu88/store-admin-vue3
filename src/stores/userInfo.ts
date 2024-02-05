@@ -2,11 +2,11 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
 interface UserInfo {
-  user_id: number;
-  user_name: string;
-  user_email: string;
-  user_avatar: string;
-  user_dec: string;
+  id: number;
+  name: string;
+  email: string;
+  avatar: string;
+  description: string;
 }
 
 export const useUserInfoStore = defineStore('userInfo', () => {
@@ -14,7 +14,7 @@ export const useUserInfoStore = defineStore('userInfo', () => {
   const userInfoJson = ref('');
 
   // 使用 ref 存储解析后的用户信息
-  const userInfo = ref<UserInfo>({ user_id: 0, user_name: '', user_email: '', user_avatar: '', user_dec: '' });
+  const userInfo = ref<UserInfo>({ id: 0, name: '', email: '', avatar: '', description: '' });
 
   // 每次 userInfoJson 变化时，尝试解析它并更新 userInfo
   watch(userInfoJson, (newJson) => {

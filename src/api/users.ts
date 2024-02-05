@@ -39,9 +39,9 @@ export const logout = () => {
 // 获取用户信息的类型
 type UserInfo = CommonResult<{
   avatar: string
-  userName: string
-  userEmail: string
-  userDec: string
+  name: string
+  email: string
+  description: string
 }>
 
 // 获取用户信息

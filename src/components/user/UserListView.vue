@@ -3,7 +3,7 @@
 </script>
 
 <template>
-    <h1>默认显示页面</h1>
+    <h1>用户列表</h1>
 </template>
 
-<style scoped></style>
+<style lang="scss" scoped></style>

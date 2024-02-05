@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import AppLayout from '@/components/layout/AppLayout.vue'
-import IndexView from '@/views/IndexView.vue'
+import DashboardView from '@/views/DashboardView.vue'
 import { useUserTokenStore } from '@/stores/userloginToken'
 
 const router = createRouter({
@@ -24,14 +24,50 @@ const router = createRouter({
                 },
                 {
                     path: '/',
-                    name: 'index',
-                    component: IndexView
+                    name: '运营概况',
+                    component: DashboardView
                 },
                 {
-                    'path': '/system/roles',
-                    'name': 'roles',
-                    'component': () => import('@/components/layout/RoleView.vue')
-                }
+                    path: '/shop/list',
+                    name: '店铺管理',
+                    component: () => import('@/components/shop/ShopListView.vue')
+                },
+                {
+                    path: '/commodity/list',
+                    name: '商品管理',
+                    component: () => import('@/components/commodity/CommodityListView.vue')
+                },
+                {
+                    path: '/advertise/list',
+                    name: '广告管理',
+                    component: () => import('@/components/advertise/AdvertiseListView.vue')
+                },
+                {
+                    path: '/users/list',
+                    name: '用户管理',
+                    component: () => import('@/components/user/UserListView.vue')
+                },
+                {
+                    path: '/system',
+                    name: '系统管理',
+                    children: [
+                        {
+                            path: '/system/setting',
+                            name: '设置',
+                            component: () => import('@/components/system/SettingView.vue')
+                        },
+                        {
+                            path: '/system/menus',
+                            name: '菜单',
+                            component: () => import('@/components/system/MenuView.vue')
+                        },
+                        {
+                            path: '/system/roles',
+                            name: '角色',
+                            component: () => import('@/components/system/RoleView.vue')
+                        }
+                    ]
+                },
             ]
         }
     ]

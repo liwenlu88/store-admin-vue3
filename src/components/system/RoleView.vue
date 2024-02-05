@@ -16,28 +16,31 @@ const storeToken = reactive({
 const userStoreInfo = useUserInfoStore()
 
 // 图片url
-const imageUrl = ref(import.meta.env.VITE_BASE_API + userStoreInfo.userInfo.user_avatar)
+const imageUrl = ref(userStoreInfo.userInfo.avatar)
 
 // 监听 Pinia store 中 userInfo.user_avatar 的变化
 watch(
     [
-        () => userStoreInfo.userInfo.user_avatar,
-        () => userStoreInfo.userInfo.user_name
+        () => userStoreInfo.userInfo.avatar,
+        () => userStoreInfo.userInfo.name,
+        () => userStoreInfo.userInfo.description
     ],
-    ([newAvatar, newUserName]) => {
+    ([avatar, name, description]) => {
         // 这个回调将在 user_avatar 或 user_name 变化时触发
-        imageUrl.value = import.meta.env.VITE_BASE_API + newAvatar
+        imageUrl.value = avatar
         // 你可以在这里添加处理 newUserName 的逻辑
-        info.userName = newUserName
+        info.name = name
+        // 你可以在这里添加处理 newUserDec 的逻辑
+        info.description = description
     }
 )
 
 const infoRules = reactive<FormRules>({
-    userName: [
+    name: [
         { required: true, message: '请输入用户名', trigger: 'blur' },
         { min: 2, max: 18, message: '用户名长度在 2 到 18 个字符', trigger: 'blur' }
     ],
-    userDec: [
+    description: [
         { required: false, message: '请输入个人简介', trigger: 'blur' },
         { min: 0, max: 255, message: '个人简介长度在 0 到 255 个字符', trigger: 'blur' }
     ]
@@ -71,9 +74,9 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
 // 上传成功后的回调
 const handleAvatarSuccess: UploadProps['onSuccess'] = (uploadFile) => {
     // 上传成功后，将图片路径保存到响应式变量中
-    info.userAvatar = uploadFile.content.path
+    info.avatar = uploadFile.content.path
     // 上传成功后，将图片路径保存到响应式变量中
-    imageUrl.value = import.meta.env.VITE_BASE_API + uploadFile.content.path
+    imageUrl.value = uploadFile.content.path
 }
 
 // 密码输入框的禁用状态
@@ -81,11 +84,11 @@ const pwdState = ref(true)
 
 // 表单数据
 const info = reactive({
-    userId: computed(() => userStoreInfo.userInfo.user_id),
-    userAvatar: userStoreInfo.userInfo.user_avatar,
-    userEmail: computed(() => userStoreInfo.userInfo.user_email),
-    userName: userStoreInfo.userInfo.user_name,
-    userDec: userStoreInfo.userInfo.user_dec
+    id: computed(() => userStoreInfo.userInfo.id),
+    avatar: userStoreInfo.userInfo.avatar,
+    email: computed(() => userStoreInfo.userInfo.email),
+    name: userStoreInfo.userInfo.name,
+    description: userStoreInfo.userInfo.description
 })
 
 const pwd = reactive({
@@ -105,9 +108,11 @@ const infoBtn = async () => {
     })
 
     updateUser(info).then((res) => {
-        if (res.data.status === 200 && res.data.success === true) {
+        if (res.data.status === 200 && res.data.message === '修改成功') {
             ElMessage.success('修改成功')
-            window.location.reload()
+            // 更新localStorage中的用户信息
+            userStoreInfo.saveUserInfo(res.data.content)
+            // window.location.reload()
         } else {
             ElMessage.error(res.data.message)
         }
@@ -126,7 +131,7 @@ const oldPwd = async () => {
         url: '/api/admin/user/verify_password',
         method: 'post',
         data: {
-            userId: info.userId,
+            id: info.id,
             oldPassword: pwd.oldPassword
         }
     }).then((res) => {
@@ -152,7 +157,7 @@ const pwdBtn = async () => {
         url: '/api/admin/user/update_password',
         method: 'post',
         data: {
-            userId: info.userId,
+            id: info.id,
             oldPassword: pwd.oldPassword,
             newPassword: pwd.newPassword,
             confirmPassword: pwd.confirmPassword
@@ -198,16 +203,16 @@ const pwdBtn = async () => {
                             </el-icon>
                         </el-upload>
 
-                        <el-form-item label="邮箱" prop="emuserEmailail">
-                            <el-input disabled v-model="info.userEmail" />
+                        <el-form-item label="邮箱" prop="email">
+                            <el-input disabled v-model="info.email" />
                         </el-form-item>
 
-                        <el-form-item label="用户名" prop="userName">
-                            <el-input v-model="info.userName" placeholder="输入用户名" clearable />
+                        <el-form-item label="用户名" prop="name">
+                            <el-input v-model="info.name" placeholder="输入用户名" clearable />
                         </el-form-item>
 
-                        <el-form-item label="个人简介" prop="userDec">
-                            <el-input class="dec" type="textarea" placeholder="在这里输入个人简介" v-model="info.userDec" />
+                        <el-form-item label="个人简介" prop="description">
+                            <el-input class="dec" type="textarea" placeholder="在这里输入个人简介" v-model="info.description" />
                         </el-form-item>
 
                         <el-form-item>
@@ -280,7 +285,10 @@ const pwdBtn = async () => {
         .avatar-uploader {
             width: 178px;
             height: 178px;
+            display: flex;
+            justify-content: space-around;
             overflow: hidden;
+            border: 1px solid #ebeef5;
         }
 
         .avatar-uploader .el-upload {

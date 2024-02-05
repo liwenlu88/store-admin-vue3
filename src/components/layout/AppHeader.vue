@@ -17,9 +17,9 @@ getUserInfo().then(res => {
 
 // 用户信息 默认值
 const userInfo = computed(() => ({
-  userName: userStoreInfo.userInfo.user_name,
-  avatar: import.meta.env.VITE_BASE_API + userStoreInfo.userInfo.user_avatar
-}));
+  name: userStoreInfo.userInfo.name,
+  avatar: userStoreInfo.userInfo.avatar
+}))
 
 // 跳转到用户信息页面
 const user = () => {
@@ -68,7 +68,7 @@ const logoutBtn = () => {
       <template #dropdown>
         <el-dropdown-menu>
           <el-dropdown-item @click="user">
-            {{ userInfo.userName }}
+            {{ userInfo.name }}
           </el-dropdown-item>
           <el-dropdown-item divided @click="logoutBtn">退出登陆</el-dropdown-item>
         </el-dropdown-menu>
