@@ -1,78 +1,66 @@
 <script setup lang="ts">
 import { isCollapse } from './isCollapse'
+import { getAllMenuList } from '@/api/menus'
+import type { AllMenu } from '@/api/menus'
+
+const menuList = ref<AllMenu[]>([])
+
+//  获取Aside菜单
+const getAsideMenu = async () => {
+  const { data } = await getAllMenuList('Aside', 0, 0)
+  if (data.status == 200 && data.success == true) {
+    menuList.value = data.content
+  } else {
+    ElMessage.error('获取菜单失败')
+  }
+}
+
+getAsideMenu()
+
 </script>
 
 <template>
   <el-aside>
     <el-scrollbar>
-      <el-menu router unique-opened :collapse="isCollapse" background-color="#36485D" text-color="#FCFCFC">
+      <el-menu router unique-opened :collapse="isCollapse" background-color="#36485D"
+               text-color="#FCFCFC">
         <a href="/" class="logo">
           <img src="@/assets/favicon.ico" alt="" />
           <h1>后台管理</h1>
         </a>
 
-        <el-menu-item index="/">
-          <el-icon>
-            <i-ep-home-filled />
-          </el-icon>
-          <span>运营概况</span>
-        </el-menu-item>
-
-        <el-menu-item index="/shop/list">
-          <el-icon>
-            <i-ep-shop />
-          </el-icon>
-          <span>店铺管理</span>
-        </el-menu-item>
-
-        <el-menu-item index="/commodity/list">
-          <el-icon>
-            <i-ep-goods />
-          </el-icon>
-          <span>商品管理</span>
-        </el-menu-item>
-
-        <el-menu-item index="/advertise/list">
-          <el-icon>
-            <i-ep-document />
-          </el-icon>
-          <span>广告管理</span>
-        </el-menu-item>
-
-        <el-menu-item index="/users/list">
-          <el-icon>
-            <i-ep-user />
-          </el-icon>
-          <span>用户管理</span>
-        </el-menu-item>
-
-        <el-sub-menu index="system">
-          <template #title>
-            <el-icon>
-              <i-ep-lock />
-            </el-icon>
-            <span>系统设置</span>
+        <template v-for="item in menuList" :key="item.id">
+          <!-- 没有子菜单的选项 -->
+          <template v-if="!item.children">
+            <el-menu-item :index="item.url">
+              <el-icon>
+                <component :is="item.icon" />
+              </el-icon>
+              <span>{{ item.name }}</span>
+            </el-menu-item>
           </template>
-          <!-- 二级菜单 -->
-          <el-menu-item index="/system/setting">
-            <el-icon>
-              <i-ep-setting />
-            </el-icon>
-            <span>设置</span>
-          </el-menu-item>
-          <el-menu-item index="/system/menus">
-            <el-icon>
-              <i-ep-menu />
-            </el-icon>
-            <span>菜单</span>
-          </el-menu-item>
-          <el-menu-item index="/system/roles">
-            <el-icon>
-              <i-ep-avatar />
-            </el-icon>
-            <span>角色</span>
-          </el-menu-item>
-        </el-sub-menu>
+          <!-- 有子菜单的选项 -->
+          <template v-else>
+            <el-sub-menu :index="item.url">
+              <template #title>
+                <el-icon>
+                  <component :is="item.icon" />
+                </el-icon>
+                <span>{{ item.name }}</span>
+              </template>
+              <!-- 二级菜单 -->
+              <template v-for="childItem in item.children" :key="childItem.id">
+                <el-menu-item :index="childItem.url">
+                  <el-icon>
+                    <component :is="childItem.icon" />
+                  </el-icon>
+                  <span>{{ childItem.name }}</span>
+                </el-menu-item>
+              </template>
+            </el-sub-menu>
+          </template>
+        </template>
+
       </el-menu>
     </el-scrollbar>
   </el-aside>

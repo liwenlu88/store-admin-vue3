@@ -98,7 +98,7 @@ const onSubmit = async () => {
     // 表单验证成功
     const data = await login(form).then((res) => {
         if (res.data.status === 200 && res.data.success === true) {
-            ElMessage.success('登陆成功')
+            ElMessage.success('success')
             return res.data
         } else {
             ElMessage.error(res.data.message)
@@ -139,7 +139,7 @@ const onSubmit = async () => {
             <el-form-item label="密码:" prop="password">
                 <el-input v-model="form.password" placeholder="请输入密码" show-password />
             </el-form-item>
-            <el-form-item label="验证码:" prop="captcha">
+            <el-form-item label="验证码:" prop="captchaCode">
                 <div class="captcha">
                     <el-input v-model="form.captchaCode" placeholder="请输入验证码" />
 
