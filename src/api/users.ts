@@ -60,28 +60,3 @@ export const updateUser = (data: any) => {
     data: data
   })
 }
-
-// 旧密码验证
-export const verifyPassword = (id: number, oldPassword: string) => {
-  return request({
-    method: 'POST',
-    url: '/api/admin/user/verify_password',
-    data: {
-      id: id,
-      oldPassword: oldPassword
-    }
-  })
-}
-
-export const updatePassword = (id: number, oldPassword: string, newPassword: string, confirmPassword: string) => {
-  return request({
-    method: 'POST',
-    url: '/api/admin/user/update_password',
-    data: {
-      id: id,
-      oldPassword: oldPassword,
-      newPassword: newPassword,
-      confirmPassword: confirmPassword
-    }
-  })
-}
