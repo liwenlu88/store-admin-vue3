@@ -2,8 +2,7 @@
 import type { FormInstance, FormRules, UploadProps } from 'element-plus'
 import { useUserTokenStore } from '@/stores/userloginToken'
 import { useUserInfoStore } from '@/stores/userInfo'
-import { updateUser } from '@/api/users'
-import request from '@/utils/request'
+import { updateUser, verifyPassword, updatePassword } from '@/api/users'
 
 // 用户token store
 const userStoreToken = useUserTokenStore()
@@ -27,11 +26,11 @@ watch(
   ],
   ([avatar, name, description]) => {
     // 这个回调将在 user_avatar 或 user_name 变化时触发
-    imageUrl.value = avatar
+    imageUrl.value = avatar!
     // 你可以在这里添加处理 newUserName 的逻辑
-    info.name = name
+    info.name = name!
     // 你可以在这里添加处理 newUserDec 的逻辑
-    info.description = description
+    info.description = description!
   }
 )
 
@@ -62,7 +61,7 @@ const pwdRules = reactive<FormRules>({
 })
 
 // 上传前的校验
-const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
+const beforeAvatarUpload = (rawFile) => {
   // 大小不超过1MB
   if (rawFile.size / 1024 / 1024 > 1) {
     ElMessage.error('图片文件不得大于1MB!')
@@ -76,7 +75,7 @@ const handleAvatarSuccess: UploadProps['onSuccess'] = (uploadFile) => {
   // 上传成功后，将图片路径保存到响应式变量中
   info.avatar = uploadFile.content.path
   // 上传成功后，将图片路径保存到响应式变量中
-  imageUrl.value = uploadFile.content.path
+  imageUrl.value = import.meta.env.VITE_BASE_API + uploadFile.content.path
 }
 
 // 密码输入框的禁用状态
@@ -100,7 +99,7 @@ const pwd = reactive({
 // 表单实例
 const formRef = ref<FormInstance>()
 
-// 提交表单
+// 信息更新
 const infoBtn = async () => {
   // 表单验证
   await formRef.value?.validate().catch((err) => {
@@ -108,7 +107,7 @@ const infoBtn = async () => {
   })
 
   updateUser(info).then((res) => {
-    if (res.data.status === 200 && res.data.message === 'success') {
+    if (res.data.status == 200 && res.data.success == true) {
       ElMessage.success('修改成功')
       // 更新localStorage中的用户信息
       userStoreInfo.saveUserInfo(res.data.content)
@@ -127,23 +126,13 @@ const oldPwd = async () => {
     throw err
   })
 
-  request({
-    url: '/api/admin/user/verify_password',
-    method: 'post',
-    data: {
-      id: info.id,
-      oldPassword: pwd.oldPassword
-    }
-  }).then((res) => {
-    if (res.data.status === 200 && res.data.message === 'success') {
-      // 解除密码输入框的禁用
-      pwdState.value = false
-    } else {
-      ElMessage.error(res.data.message)
-    }
-  }).catch((err) => {
-    console.log(err)
-  })
+  const { data } = await verifyPassword(info.id, pwd.oldPassword)
+  if (data.status == 200 && data.success == true) {
+    // 解除密码输入框的禁用
+    pwdState.value = false
+  } else {
+    ElMessage.error(data.message)
+  }
 }
 
 // 修改密码
@@ -153,26 +142,14 @@ const pwdBtn = async () => {
     throw err
   })
 
-  request({
-    url: '/api/admin/user/update_password',
-    method: 'post',
-    data: {
-      id: info.id,
-      oldPassword: pwd.oldPassword,
-      newPassword: pwd.newPassword,
-      confirmPassword: pwd.confirmPassword
-    }
-  }).then((res) => {
-    if (res.data.status === 200 && res.data.message === 'success') {
-      ElMessage.success(res.data.message)
-      localStorage.clear()
-      window.location.reload()
-    } else {
-      ElMessage.error(res.data.message)
-    }
-  }).catch((err) => {
-    console.log(err)
-  })
+  const { data } = await updatePassword(info.id, pwd.newPassword, pwd.newPassword, pwd.confirmPassword)
+  if (data.status == 200 && data.success == true) {
+    ElMessage.success(data.message)
+    localStorage.clear()
+    window.location.reload()
+  } else {
+    ElMessage.error(data.message)
+  }
 }
 
 </script>
