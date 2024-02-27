@@ -69,7 +69,7 @@ const onSubmit = () => {
     </el-form-item>
 
     <el-form-item label="菜单图标">
-      <el-input type="text" v-model="form.icon" placeholder="输入菜单图标" clearable />
+
     </el-form-item>
 
     <el-form-item label="菜单层级">
