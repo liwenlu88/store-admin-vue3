@@ -8,6 +8,7 @@ type CommonResult<T = string> = {
   content: T
 }
 
+// 菜单类型
 export type AllMenu = {
   id: number
   name: string
@@ -41,7 +42,23 @@ export const getAllMenuList = (type: string, pageSize: any, pageNum: number) => 
   })
 }
 
-// 删除菜单
+// 保存菜单
+type saveMenuType = Pick<AllMenu, 'name' | 'url' | 'icon' | 'level' | 'parent_id' | 'order'
+  | 'is_deleted' | 'delete_at' | 'create_at' | 'update_at'> & { id?: number }
+
+/**
+ * 保存菜单
+ * @param menuInfo
+ */
+export const menuSave = (menuInfo: saveMenuType) => {
+  return request<CommonResult>({
+    url: '/api/admin/menu/save',
+    method: 'post',
+    data: menuInfo
+  })
+}
+
+// 删除菜单 -- 软删除
 export const menuDeleteList = (id: number) => {
   return request<CommonResult>({
     url: '/api/admin/menu/delete',
