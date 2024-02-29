@@ -1,8 +1,13 @@
 <script setup lang="ts">
-import { getAllMenuList } from '@/api/menus'
+import { getAllMenuList, menuSave } from '@/api/menus'
 import type { AllMenu } from '@/api/menus'
+import iconPicker from '@/components/iconpicker/iconPicker.vue'
+import router from '@/router'
+import type { FormInstance, FormRules } from 'element-plus'
 
+// 一级菜单
 const menuList = ref([] as AllMenu[])
+
 const getAllMenu = async () => {
   const { data } = await getAllMenuList('All', 0, 0)
   if (data.status == 200 && data.success == true) {
@@ -14,12 +19,20 @@ const getAllMenu = async () => {
 
 getAllMenu()
 
+const rules = reactive<FormRules>({
+  name: [{ required: true, message: '请输入菜单名称', trigger: 'blur' }],
+  url: [{ required: true, message: '请输入菜单路径', trigger: 'blur' }],
+  icon: [{ required: true, message: '请选择菜单图标', trigger: 'blur' }],
+  level: [{ required: true, message: '请选择菜单层级', trigger: 'blur' }]
+})
+
 // 顶级菜单列表
 const topMenus = computed(() => {
   return menuList.value.filter((item) => item.level == 0)
 })
 
-const orderBy = ref()
+const orderBy = ref<number>()
+const levelBy = ref<number>(1)
 
 watch(topMenus, () => {
   orderBy.value = topMenus.value.length + 1
@@ -31,6 +44,7 @@ const parentMenu = (value: number) => {
     orderBy.value = topMenus.value.length + 1
   } else {
     // 没有子菜单
+    levelBy.value = 2
     if (menuList.value[value - 1].children.length == 0) {
       orderBy.value = 1
     } else {
@@ -38,41 +52,57 @@ const parentMenu = (value: number) => {
       orderBy.value = menuList.value[value - 1].children[menuList.value[value - 1].children.length - 1].order + 1
     }
   }
-
 }
+
+// 表单实例
+const formRef = ref<FormInstance>()
 
 const form = reactive({
   name: '',
   url: '',
   icon: '',
+  level: levelBy,
   parent_id: '0',
   is_visible: true,
   order: orderBy,
+  is_delete: false,
+  deleted_at: null,
   created_at: new Date().toISOString().slice(0, 19).replace('T', ' '),
   updated_at: new Date().toISOString().slice(0, 19).replace('T', ' ')
 })
 
-const onSubmit = () => {
-  console.log(form)
+const onSubmit = async () => {
+  await formRef.value?.validate().catch((err) => {
+    // 抛出错误
+    throw err
+  })
+
+  const { data } = await menuSave(form)
+  if (data.status == 200 && data.success == true) {
+    await router.push({ name: 'menu-list' })
+    ElMessage.success('添加成功')
+  } else {
+    ElMessage.error('添加失败' + data.message)
+  }
 }
 
 </script>
 
 <template>
-  <el-form :model="form" label-width="120px" size="large">
-    <el-form-item label="菜单名称">
+  <el-form :model="form" :hide-required-asterisk="true" :rules="rules" ref="formRef" label-width="120px" size="large">
+    <el-form-item label="菜单名称" prop="name">
       <el-input type="text" v-model="form.name" placeholder="输入菜单名称" clearable />
     </el-form-item>
 
-    <el-form-item label="菜单地址">
+    <el-form-item label="菜单地址" prop="url">
       <el-input type="text" v-model="form.url" placeholder="输入菜单地址" clearable />
     </el-form-item>
 
-    <el-form-item label="菜单图标">
-
+    <el-form-item label="菜单图标" prop="icon">
+      <icon-picker v-model="form.icon" />
     </el-form-item>
 
-    <el-form-item label="菜单层级">
+    <el-form-item label="上层菜单">
       <el-select v-model="form.parent_id" placeholder="选择上层菜单" @change="parentMenu">
         <el-option label="顶级菜单" value="0" />
         <el-option v-for="item in topMenus" :key="item.id" :label="item.name" :value="item.id" />
@@ -80,33 +110,21 @@ const onSubmit = () => {
     </el-form-item>
 
     <el-form-item label="是否显示">
-      <el-switch v-model="form.is_visible" inline-prompt active-text="是"
-                 active-action-icon="View"
-                 inactive-action-icon="Hide"
-                 inactive-text="否" />
+      <el-switch v-model="form.is_visible" inline-prompt active-text="是" active-action-icon="View"
+        inactive-action-icon="Hide" inactive-text="否" />
     </el-form-item>
 
     <el-form-item label="菜单排序">
-      <el-input type="number" v-model="form.order" placeholder="排序" />
+      <el-input-number type="number" v-model="form.order" placeholder="排序" />
     </el-form-item>
 
     <el-form-item label="创建时间">
-      <el-date-picker
-        v-model="form.created_at"
-        type="datetime"
-        placeholder="创建时间"
-        format="YYYY-MM-DD HH:mm:ss"
-        value-format="YYYY-MM-DD HH:mm:ss"
-      />
+      <el-date-picker v-model="form.created_at" type="datetime" placeholder="创建时间" format="YYYY-MM-DD HH:mm:ss"
+        value-format="YYYY-MM-DD HH:mm:ss" />
     </el-form-item>
     <el-form-item label="更新时间">
-      <el-date-picker
-        v-model="form.updated_at"
-        type="datetime"
-        placeholder="更新时间"
-        format="YYYY-MM-DD HH:mm:ss"
-        value-format="YYYY-MM-DD HH:mm:ss"
-      />
+      <el-date-picker v-model="form.updated_at" type="datetime" placeholder="更新时间" format="YYYY-MM-DD HH:mm:ss"
+        value-format="YYYY-MM-DD HH:mm:ss" />
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="onSubmit">提交</el-button>

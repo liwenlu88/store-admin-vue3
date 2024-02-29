@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import AppLayout from '@/components/layout/AppLayout.vue'
-import DashboardView from '@/views/DashboardView.vue'
+import DashboardView from '@/components/dashboard/DashboardView.vue'
 import { useUserTokenStore } from '@/stores/userloginToken'
 
 const router = createRouter({
@@ -9,7 +9,7 @@ const router = createRouter({
     {
       path: '/login',
       name: 'login',
-      component: () => import('@/views/login/LoginView.vue')
+      component: () => import('@/components/login/LoginView.vue')
     },
     {
       path: '/',
@@ -24,32 +24,32 @@ const router = createRouter({
         },
         {
           path: '/',
-          name: '运营概况',
+          name: 'Dashboard',
           component: DashboardView
         },
         {
           path: '/shop/list',
-          name: '店铺管理',
+          name: 'shop-list',
           component: () => import('@/components/shop/ShopListView.vue')
         },
         {
           path: '/commodity/list',
-          name: '商品管理',
+          name: 'commodity-list',
           component: () => import('@/components/commodity/CommodityListView.vue')
         },
         {
           path: '/advertise/list',
-          name: '广告管理',
+          name: 'advertise-list',
           component: () => import('@/components/advertise/AdvertiseListView.vue')
         },
         {
           path: '/users/list',
-          name: '用户管理',
+          name: 'user-list',
           component: () => import('@/components/user/UserListView.vue')
         },
         {
           path: '/system',
-          name: '系统管理',
+          name: 'system',
           children: [
             {
               path: '/system/setting',
@@ -59,7 +59,7 @@ const router = createRouter({
             {
               path: '/system/menus',
               name: 'menu-list',
-              component: () => import('@/components/system/menu/MenuView.vue')
+              component: () => import('@/components/system/menu/MenuListView.vue')
             },
             {
               path: '/system/menus/create',
@@ -73,7 +73,7 @@ const router = createRouter({
             },
             {
               path: '/system/roles',
-              name: '角色',
+              name: 'roles',
               component: () => import('@/components/system/RoleView.vue')
             }
           ]

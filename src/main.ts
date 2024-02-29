@@ -7,6 +7,9 @@ import router from './router'
 
 import '@/assets/app.scss'
 
+// 引入vite-plugin-icons-icons脚本
+import 'virtual:svg-icons-register'
+
 const app = createApp(App)
 
 app.use(createPinia())

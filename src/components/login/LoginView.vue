@@ -129,7 +129,7 @@ const onSubmit = async () => {
              label-width="120px"
              label-position="top" ref="formRef" :rules="rules" size="large">
       <h2 class="logo">
-        <img src="@/assets/favicon.ico" alt="logo" />
+        <img src="../../assets/favicon.ico" alt="logo" />
         <span>后台管理系统</span>
       </h2>
 

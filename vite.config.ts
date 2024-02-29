@@ -10,9 +10,18 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
 
+import { resolve } from 'path'
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
+
 export default defineConfig({
   plugins: [
     vue(),
+    createSvgIconsPlugin({
+      // 指定需缓存的图标文件夹
+      iconDirs: [resolve(process.cwd(), '/src/assets/icons')],
+      // 指定symbolId格式
+      symbolId: 'icon-[dir]-[name]'
+    }),
     AutoImport({
       // 自动导入 Vue 相关函数
       imports: ['vue', 'vue-router', 'vuex'],
