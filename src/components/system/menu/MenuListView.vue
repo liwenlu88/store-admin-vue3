@@ -81,6 +81,7 @@ const handleDelete = async (id: number) => {
       <el-table-column prop="icon" label="图标" align="center" />
       <el-table-column prop="level" label="层级" align="center" width="120" />
       <el-table-column prop="order" label="排序" align="center" width="120" />
+      <el-table-column prop="is_visible" label="状态" align="center" width="120" />
       <el-table-column prop="is_deleted" label="软删除" align="center" width="120" />
       <el-table-column prop="updated_at" label="更新时间" align="center" sortable />
       <el-table-column label="操作" width="160" align="center" v-slot="{ row }">
