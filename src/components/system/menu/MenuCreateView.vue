@@ -59,16 +59,12 @@ const formRef = ref<FormInstance>()
 
 const form = reactive({
   name: '',
-  url: '',
-  icon: '',
+  url: '/',
+  icon: 'loading',
   level: levelBy,
-  parent_id: '0',
+  parent_id: 0,
   is_visible: true,
-  order: orderBy,
-  is_delete: false,
-  deleted_at: null,
-  created_at: new Date().toISOString().slice(0, 19).replace('T', ' '),
-  updated_at: new Date().toISOString().slice(0, 19).replace('T', ' ')
+  order: orderBy
 })
 
 const onSubmit = async () => {
@@ -89,7 +85,9 @@ const onSubmit = async () => {
 </script>
 
 <template>
-  <el-form :model="form" :hide-required-asterisk="true" :rules="rules" ref="formRef" label-width="120px" size="large">
+  <el-form :model="form" :hide-required-asterisk="true" :rules="rules" ref="formRef"
+           label-width="120px" size="large">
+
     <el-form-item label="菜单名称" prop="name">
       <el-input type="text" v-model="form.name" placeholder="输入菜单名称" clearable />
     </el-form-item>
@@ -100,32 +98,27 @@ const onSubmit = async () => {
 
     <el-form-item label="菜单图标" prop="icon">
       <icon-picker v-model="form.icon" />
+      <el-icon size="20">
+        <component :is="form.icon" />
+      </el-icon>
     </el-form-item>
 
     <el-form-item label="上层菜单">
       <el-select v-model="form.parent_id" placeholder="选择上层菜单" @change="parentMenu">
-        <el-option label="顶级菜单" value="0" />
+        <el-option label="顶级菜单" :value="form.parent_id" />
         <el-option v-for="item in topMenus" :key="item.id" :label="item.name" :value="item.id" />
       </el-select>
     </el-form-item>
 
     <el-form-item label="是否显示">
       <el-switch v-model="form.is_visible" inline-prompt active-text="是" active-action-icon="View"
-        inactive-action-icon="Hide" inactive-text="否" />
+                 inactive-action-icon="Hide" inactive-text="否" />
     </el-form-item>
 
     <el-form-item label="菜单排序">
       <el-input-number type="number" v-model="form.order" placeholder="排序" />
     </el-form-item>
 
-    <el-form-item label="创建时间">
-      <el-date-picker v-model="form.created_at" type="datetime" placeholder="创建时间" format="YYYY-MM-DD HH:mm:ss"
-        value-format="YYYY-MM-DD HH:mm:ss" />
-    </el-form-item>
-    <el-form-item label="更新时间">
-      <el-date-picker v-model="form.updated_at" type="datetime" placeholder="更新时间" format="YYYY-MM-DD HH:mm:ss"
-        value-format="YYYY-MM-DD HH:mm:ss" />
-    </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="onSubmit">提交</el-button>
     </el-form-item>
@@ -136,6 +129,10 @@ const onSubmit = async () => {
 .el-form {
   margin-right: 40px;
   padding: 20px;
+
+  .el-icon {
+    margin-left: 10px;
+  }
 }
 
 .el-button {

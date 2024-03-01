@@ -12,18 +12,18 @@ type CommonResult<T = string> = {
 
 // 菜单类型
 export type AllMenu = {
-  id: number
+  id: number | string | string[]
   name: string
   url: string
   icon: string
   level: number
-  parent_id: number | string
+  parent_id: number
   is_visible: boolean
   order: number
   is_deleted: boolean
-  delete_at: Date | null
-  create_at: Date
-  update_at: Date
+  deleted_at: string
+  created_at: string
+  updated_at: string
   children: AllMenu[]
 }
 

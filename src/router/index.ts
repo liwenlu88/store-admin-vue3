@@ -72,6 +72,11 @@ const router = createRouter({
               component: () => import('@/components/system/menu/MenuEditView.vue')
             },
             {
+              path: '/system/menus/:id/detail',
+              name: 'menu-detail',
+              component: () => import('@/components/system/menu/MenuDetailView.vue')
+            },
+            {
               path: '/system/roles',
               name: 'roles',
               component: () => import('@/components/system/RoleView.vue')

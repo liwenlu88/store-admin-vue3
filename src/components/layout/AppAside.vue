@@ -68,6 +68,7 @@ getAsideMenu()
 
 <style lang="scss" scoped>
 .el-aside {
+  padding-top: 20px;
   background-color: #2b3e54;
   height: 100vh;
   width: auto;
@@ -75,6 +76,7 @@ getAsideMenu()
   .el-menu {
     background-color: #2b3e54;
     width: 260px;
+    border: 0 #2b3e54;
 
     &.el-menu--collapse {
       width: 60px;
@@ -89,10 +91,12 @@ getAsideMenu()
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
     height: 60px;
     width: 100%;
     background-color: #2b3e54;
     color: #fcfcfc;
+    margin-bottom: 20px;
 
     img {
       width: 32px;
