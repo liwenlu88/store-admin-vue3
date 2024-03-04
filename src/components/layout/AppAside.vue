@@ -31,7 +31,7 @@ getAsideMenu()
 
         <template v-for="item in menuList" :key="item.id">
           <!-- 没有子菜单的选项 -->
-          <template v-if="!item.children">
+          <template v-if="item.children.length == 0">
             <el-menu-item :index="item.url">
               <el-icon>
                 <component :is="item.icon" />
@@ -39,6 +39,7 @@ getAsideMenu()
               <span>{{ item.name }}</span>
             </el-menu-item>
           </template>
+
           <!-- 有子菜单的选项 -->
           <template v-else>
             <el-sub-menu :index="item.url">

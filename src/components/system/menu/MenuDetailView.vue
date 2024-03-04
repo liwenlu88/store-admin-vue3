@@ -71,14 +71,8 @@ const topMenus = computed(() => {
       </el-select>
     </el-form-item>
 
-    <el-form-item label="是否显示">
+    <el-form-item label="是否可见">
       <el-switch v-model="menuDetailList.is_visible" :active-value="1"
-                 :inactive-value="0" inline-prompt active-text="是" active-action-icon="View"
-                 inactive-action-icon="Hide" inactive-text="否" disabled />
-    </el-form-item>
-
-    <el-form-item label="软删除">
-      <el-switch v-model="menuDetailList.is_deleted" :active-value="1"
                  :inactive-value="0" inline-prompt active-text="是" active-action-icon="View"
                  inactive-action-icon="Hide" inactive-text="否" disabled />
     </el-form-item>
@@ -87,11 +81,6 @@ const topMenus = computed(() => {
       <el-input-number type="number" v-model="menuDetailList.order" placeholder="排序" disabled />
     </el-form-item>
 
-    <el-form-item label="软删除时间">
-      <el-date-picker v-model="menuDetailList.deleted_at" type="datetime" placeholder="软删除时间"
-                      format="YYYY-MM-DD HH:mm:ss"
-                      value-format="YYYY-MM-DD HH:mm:ss" disabled />
-    </el-form-item>
     <el-form-item label="创建时间">
       <el-date-picker v-model="menuDetailList.created_at" type="datetime" placeholder="创建时间"
                       format="YYYY-MM-DD HH:mm:ss"

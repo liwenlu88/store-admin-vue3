@@ -21,7 +21,6 @@ const menuDetailData = async () => {
     form.icon = menuDetailList.value.icon
     form.parent_id = menuDetailList.value.parent_id
     form.is_visible = menuDetailList.value.is_visible
-    form.is_deleted = menuDetailList.value.is_deleted
     form.order = menuDetailList.value.order
     form.created_at = menuDetailList.value.created_at
   } else {
@@ -59,7 +58,6 @@ const topMenus = computed(() => {
 
 const orderBy = ref<number>(menuDetailList.value.order)
 const levelBy = ref<number>(menuDetailList.value.level)
-const deleted_at = ref<string>(menuDetailList.value.deleted_at)
 
 // 选择上层菜单后 自动改变排序
 const parentMenu = (value: number) => {
@@ -77,15 +75,6 @@ const parentMenu = (value: number) => {
   }
 }
 
-// 根据软删除状态调整 deleted_at
-const isDeleteBy = (value: boolean | string | number) => {
-  if (value) {
-    deleted_at.value = new Date().toISOString().slice(0, 19).replace('T', ' ')
-  } else {
-    deleted_at.value = ''
-  }
-}
-
 // 表单实例
 const formRef = ref<FormInstance>()
 
@@ -97,9 +86,7 @@ const form = reactive({
   level: levelBy,
   parent_id: 0,
   is_visible: true,
-  is_deleted: false,
   order: orderBy,
-  deleted_at: deleted_at,
   created_at: ''
 })
 
@@ -147,16 +134,10 @@ const onSubmit = async () => {
       </el-select>
     </el-form-item>
 
-    <el-form-item label="是否显示">
+    <el-form-item label="是否可见">
       <el-switch v-model="form.is_visible" :active-value="1"
                  :inactive-value="0" inline-prompt active-text="是" active-action-icon="View"
                  inactive-action-icon="Hide" inactive-text="否" />
-    </el-form-item>
-
-    <el-form-item label="软删除">
-      <el-switch v-model="form.is_deleted" :active-value="1"
-                 :inactive-value="0" inline-prompt active-text="是" active-action-icon="View"
-                 inactive-action-icon="Hide" inactive-text="否" @change="isDeleteBy" />
     </el-form-item>
 
     <el-form-item label="菜单排序">

@@ -1,5 +1,4 @@
 import request from '@/utils/request'
-import type { UnwrapNestedRefs } from 'vue'
 import type { RouteParamValue } from 'vue-router'
 
 // 公共的类型
@@ -20,7 +19,6 @@ export type AllMenu = {
   parent_id: number
   is_visible: boolean
   order: number
-  is_deleted: boolean
   deleted_at: string
   created_at: string
   updated_at: string
@@ -33,14 +31,14 @@ export type AllMenu = {
  * @param pageSize 每页显示数量
  * @param pageNum 页码
  */
-export const getAllMenuList = (type: string, pageSize: any, pageNum: number) => {
+export const getAllMenuList = (type: string, pageSize: number, pageNum: number) => {
   return request<CommonResult<AllMenu[]>>({
     url: '/api/admin/menu/list',
     method: 'post',
     data: {
-      'type': type,
-      'page_size': pageSize,
-      'page': pageNum
+      type: type,
+      page_size: pageSize,
+      page: pageNum
     }
   })
 }
@@ -65,7 +63,7 @@ export const menuDetail = (id: string | RouteParamValue[]) => {
     url: '/api/admin/menu/detail',
     method: 'post',
     data: {
-      'id': id
+      id: id
     }
   })
 }
@@ -76,7 +74,7 @@ export const menuDeleteList = (id: number) => {
     url: '/api/admin/menu/delete',
     method: 'post',
     data: {
-      'id': id
+      id: id
     }
   })
 }

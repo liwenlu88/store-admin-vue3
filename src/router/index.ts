@@ -82,6 +82,11 @@ const router = createRouter({
               component: () => import('@/components/system/RoleView.vue')
             }
           ]
+        },
+        {
+          path: '/recycle/list',
+          name: 'recycle-list',
+          component: () => import('@/components/recycle/RecycleListView.vue')
         }
       ]
     }

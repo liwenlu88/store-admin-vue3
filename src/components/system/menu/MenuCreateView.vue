@@ -85,8 +85,7 @@ const onSubmit = async () => {
 </script>
 
 <template>
-  <el-form :model="form" :hide-required-asterisk="true" :rules="rules" ref="formRef"
-           label-width="120px" size="large">
+  <el-form :model="form" :hide-required-asterisk="true" :rules="rules" ref="formRef" label-width="120px" size="large">
 
     <el-form-item label="菜单名称" prop="name">
       <el-input type="text" v-model="form.name" placeholder="输入菜单名称" clearable />
@@ -112,7 +111,7 @@ const onSubmit = async () => {
 
     <el-form-item label="是否显示">
       <el-switch v-model="form.is_visible" inline-prompt active-text="是" active-action-icon="View"
-                 inactive-action-icon="Hide" inactive-text="否" />
+        inactive-action-icon="Hide" inactive-text="否" />
     </el-form-item>
 
     <el-form-item label="菜单排序">

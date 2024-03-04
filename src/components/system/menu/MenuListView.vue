@@ -23,13 +23,18 @@ const getAllMenu = async () => {
 
 getAllMenu()
 
+// 顶级菜单列表
+const topMenus = computed(() => {
+  return menuList.value.filter((item) => item.level == 0)
+})
+
 // 处理每页数量改变事件
 const handleSizeChange = async (val: number) => {
   const { data } = await getAllMenuList('All', val, 1)
   if (data.status == 200 && data.success == true) {
     menuList.value = data.content.data
   } else {
-    ElMessage.error('获取菜单失败')
+    ElMessage.error('获取菜单失败' + data.message)
   }
 }
 
@@ -40,7 +45,7 @@ const handleCurrentChange = async (val: number) => {
   if (data.status == 200 && data.success == true) {
     menuList.value = data.content.data
   } else {
-    ElMessage.error('获取菜单失败')
+    ElMessage.error('获取菜单失败' + data.message)
   }
 }
 
@@ -64,19 +69,13 @@ const isVisibleSave = async (id: number, isVisible: number) => {
   }
 }
 
-// 软删除状态更新
-const isDeletedSave = async (id: number, isDeleted: number) => {
+// 软删除
+const confirmEvent = async (id: number) => {
   isDeleteData.value.id = id
-  isDeleteData.value.is_deleted = isDeleted == 1
 
-  if (isDeleteData.value.is_deleted) {
-    isDeleteData.value.deleted_at = new Date().toISOString().slice(0, 19).replace('T', ' ')
-  } else {
-    isDeleteData.value.deleted_at = ''
-  }
-
-  const { data } = await menuSave(isDeleteData.value)
+  const { data } = await menuDeleteList(id)
   if (data.status == 200 && data.success == true) {
+    ElMessage.warning('删除成功，进入回收站查看')
     await getAllMenu()
   }
 }
@@ -98,22 +97,34 @@ const isDeletedSave = async (id: number, isDeleted: number) => {
       border
       highlight-current-row
     >
-      <el-table-column type="index" flxed label="编号" align="center" width="120" />
-      <el-table-column flxed prop="name" label="菜单名称" align="center" sortable />
-      <el-table-column prop="url" label="链接地址" align="center" />
-      <el-table-column prop="icon" label="图标" width="160" align="center">
+      <el-table-column type="index" flxed label="编号" align="center" width="100" />
+      <el-table-column flxed prop="name" label="菜单名称" align="center" width="200" sortable />
+      <el-table-column prop="url" label="链接地址" align="center" width="200" />
+
+      <el-table-column prop="icon" label="图标" align="center">
         <template #default="{row}">
           <el-icon v-if="row.icon" size="20">
             <component :is="row.icon" />
           </el-icon>
         </template>
       </el-table-column>
+
+      <el-table-column label="上层菜单" align="center" width="160">
+        <template #default="{row}">
+          <span v-if="row.parent_id == 0">顶级菜单</span>
+          <span v-else v-for="item in topMenus" :key="item.id as number">
+            {{ item.id == row.parent_id ? item.name : '' }}
+          </span>
+        </template>
+      </el-table-column>
+
       <el-table-column prop="order" label="排序" align="center" width="180" v-slot="{row}">
         <el-input-number type="number" v-model="row.order"
                          @change="() => orderSave(row.id, row.order)"
                          placeholder="排序" />
       </el-table-column>
-      <el-table-column prop="is_visible" label="状态" align="center" width="120" v-slot="{row}">
+
+      <el-table-column prop="is_visible" label="是否可见" align="center" v-slot="{row}">
         <el-switch
           v-model="row.is_visible"
           :active-value="1"
@@ -124,25 +135,25 @@ const isDeletedSave = async (id: number, isDeleted: number) => {
           @change="()=>isVisibleSave(row.id, row.is_visible)"
         />
       </el-table-column>
-      <el-table-column prop="is_deleted" label="软删除" align="center" width="120" v-slot="{row}">
-        <el-switch
-          v-model="row.is_deleted"
-          :active-value="1"
-          :inactive-value="0"
-          inline-prompt
-          active-text="是"
-          inactive-text="否"
-          @change="()=>isDeletedSave(row.id, row.is_deleted)"
-        />
-      </el-table-column>
+
       <el-table-column prop="updated_at" label="更新时间" width="200" align="center" sortable />
-      <el-table-column flxed label="操作" width="160" align="center" v-slot="{ row }">
-        <el-button type="primary" @click="router.push({name:'menu-edit',params:{id:row.id}})">
-          修改
-        </el-button>
+
+      <el-table-column flxed label="操作" align="center" width="240" v-slot="{ row }">
+
         <el-button type="warning" @click="router.push({name:'menu-detail',params:{id:row.id}})">
           详情
         </el-button>
+
+        <el-button type="primary" @click="router.push({name:'menu-edit',params:{id:row.id}})">
+          修改
+        </el-button>
+
+        <el-popconfirm title="确定要删除吗?" @confirm="confirmEvent(row.id)">
+          <template #reference>
+            <el-button type="danger">删除</el-button>
+          </template>
+        </el-popconfirm>
+
       </el-table-column>
     </el-table>
 
