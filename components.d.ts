@@ -118,6 +118,8 @@ declare module 'vue' {
     ShopListView: typeof import('./src/components/shop/ShopListView.vue')['default']
     SvgIcon: typeof import('./src/components/icons/SvgIcon.vue')['default']
     TheWelcome: typeof import('./src/components/TheWelcome.vue')['default']
+    UserDetailView: typeof import('./src/components/user/UserDetailView.vue')['default']
+    UserEditView: typeof import('./src/components/user/UserEditView.vue')['default']
     UserListView: typeof import('./src/components/user/UserListView.vue')['default']
     UserView: typeof import('./src/components/layout/UserView.vue')['default']
     WelcomeItem: typeof import('./src/components/WelcomeItem.vue')['default']

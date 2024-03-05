@@ -68,8 +68,10 @@ const handleSizeChange = async (val: number) => {
   const {data} = await getAllRecycleList({
     name: name.value,
     type: type.value,
-    pageSize: val,
-    pageNum: 1
+    start_at: formattedLocalRetrievalTimes[0],
+    end_at: formattedLocalRetrievalTimes[1],
+    page_size: val,
+    page: 1
   })
   if (data.status == 200 && data.success == true) {
     recycleList.value = data.content.data
@@ -84,8 +86,10 @@ const handleCurrentChange = async (val: number) => {
   const {data} = await getAllRecycleList({
     name: name.value,
     type: type.value,
-    pageSize: unwrappedPerPage.value,
-    pageNum: val
+    start_at: formattedLocalRetrievalTimes[0],
+    end_at: formattedLocalRetrievalTimes[1],
+    page_size: unwrappedPerPage.value,
+    page: val
   })
   if (data.status == 200 && data.success == true) {
     recycleList.value = data.content.data
@@ -189,23 +193,11 @@ const batchDelete = async () => {
     <template #header>
       <div class="card-header">
         <div class="search">
-          <el-date-picker
-              v-model="retrievalTime"
-              size="large"
-              type="datetimerange"
-              range-separator="至"
-              start-placeholder="开始时间"
-              end-placeholder="结束时间"
-              clearable
-          />
+          <el-date-picker v-model="retrievalTime" size="large" type="datetimerange" range-separator="至"
+                          start-placeholder="开始时间" end-placeholder="结束时间" clearable/>
           <el-input class="name" v-model="name" placeholder="请选择检索名" clearable/>
           <el-select v-model="type" placeholder="请选择检索类别" size="large" clearable>
-            <el-option
-                v-for="item in recycleType"
-                :key="item"
-                :label="item"
-                :value="item"
-            />
+            <el-option v-for="item in recycleType" :key="item" :label="item" :value="item"/>
           </el-select>
           <el-button type="primary" @click="searchBtn" size="large">
             <el-icon>
@@ -215,8 +207,7 @@ const batchDelete = async () => {
           </el-button>
         </div>
         <div class="button">
-          <el-popconfirm title="恢复到原位置"
-                         @confirm="batchRecover">
+          <el-popconfirm title="恢复到原位置" @confirm="batchRecover">
             <template #reference>
               <el-button type="info" size="large" :disabled="batchStatus">
                 <el-icon>
@@ -227,8 +218,8 @@ const batchDelete = async () => {
             </template>
           </el-popconfirm>
 
-          <el-popconfirm title="确定要删除吗？删除后不可恢复！"
-                         @confirm="batchDelete">
+          <el-popconfirm title="确定要删除吗？删除后不可恢复！" @confirm="batchDelete">
+
             <template #reference>
               <el-button type="info" size="large" :disabled="batchStatus">
                 <el-icon>
@@ -242,33 +233,27 @@ const batchDelete = async () => {
       </div>
     </template>
 
-    <el-table
-        :data="recycleList"
-        stripe
-        row-key="id"
-        border
-        highlight-current-row
-        @selection-change="handleSelectionChange"
-    >
+    <el-table :data="recycleList" stripe row-key="id" border highlight-current-row
+              @selection-change="handleSelectionChange">
 
       <el-table-column type="selection" align="center" width="55"/>
       <el-table-column type="index" flxed label="编号" align="center" width="100"/>
-      <el-table-column flxed prop="name" label="菜单名称" align="center" sortable/>
+      <el-table-column prop="name" label="菜单名称" align="center" sortable/>
       <el-table-column prop="label" label="标签" align="center" sortable/>
       <el-table-column prop="type" label="类别" align="center" sortable/>
       <el-table-column prop="created_at" label="删除时间" align="center" sortable/>
 
       <el-table-column flxed label="操作" align="center" v-slot="{ row }">
 
-        <el-popconfirm title="恢复到原位置"
-                       @confirm="() => handleRecover(row.id,row.label,row.item_id)">
+        <el-popconfirm title="恢复到原位置" @confirm="() => handleRecover(row.id, row.label, row.item_id)">
+
           <template #reference>
             <el-button type="warning">恢复数据</el-button>
           </template>
         </el-popconfirm>
 
-        <el-popconfirm title="确定要删除吗？删除后不可恢复！"
-                       @confirm="() => handleDelete(row.id,row.label,row.item_id)">
+        <el-popconfirm title="确定要删除吗？删除后不可恢复！" @confirm="() => handleDelete(row.id, row.label, row.item_id)">
+
           <template #reference>
             <el-button type="danger">彻底删除</el-button>
           </template>
@@ -278,14 +263,9 @@ const batchDelete = async () => {
     </el-table>
 
     <template #footer>
-      <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          background
-          layout="total, sizes, prev, pager, next, jumper"
-          :page-sizes="[10, 20, 50, 100]"
-          v-model:page-size="pageSize.value"
-          :total="total"/>
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" background
+                     layout="total, sizes, prev, pager, next, jumper" :page-sizes="[10, 20, 50, 100]"
+                     v-model:page-size="pageSize.value" :total="total"/>
     </template>
 
   </el-card>
